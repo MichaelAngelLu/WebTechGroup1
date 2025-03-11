@@ -1,0 +1,13 @@
+{
+    "name": "your-project-name",
+    "version": "1.0.0",
+    "description": "A Vue.js project",
+    "scripts": {
+      "dev": "vite",
+      "build": "vite build",
+      "serve": "vite preview"
+    },
+    "dependencies": {},
+    "devDependencies": {}
+  }
+  
