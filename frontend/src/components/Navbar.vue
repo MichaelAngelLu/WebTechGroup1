@@ -8,8 +8,8 @@
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
         <RouterLink to="/contact">Contact</RouterLink>
-        <RouterLink to="/jobs">Job Listings</RouterLink>
-        <RouterLink to="/login">Log In</RouterLink>
+        <RouterLink to="/jobs">Jobs</RouterLink>
+        <RouterLink to="/login">Login</RouterLink>
       </nav>
     </header>
   </template>
