@@ -1,47 +1,20 @@
 <script setup>
-import { RouterView } from 'vue-router'
-import Navbar from '@/components/Navbar.vue'
+import { useRoute } from 'vue-router';
+import Navbar from '@/components/Navbar.vue';
+import Footer from '@/components/footer.vue';
+
+const route = useRoute();
 </script>
 
 <template>
   <div id="app">
-    <!-- Reusable Navbar -->
-    <Navbar />
+    <!-- Show Navbar Only If Not in Admin Pages -->
+    <Navbar v-if="!route.path.startsWith('/admin')" />
 
-    <!-- Page Content -->
-    <main class="main-content">
+    <main>
       <RouterView />
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-      <p>© 2025 JuanJobsPH | No. 1 Recruitment Agency Platform</p>
-    </footer>
+    <Footer />
   </div>
 </template>
-
-<style scoped>
-/* Global Layout */
-#app {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-/* Main Content */
-.main-content {
-  flex: 1;
-  padding-top: 80px; /* Space below navbar */
-}
-
-/* Footer */
-.footer {
-  text-align: center;
-  padding: 1rem;
-  background: #111827;
-  color: white;
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-}
-</style>

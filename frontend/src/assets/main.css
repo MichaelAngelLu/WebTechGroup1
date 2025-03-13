@@ -39,14 +39,14 @@ body {
 }
 
 .logo {
-  width: 100px; /* Adjust logo size */
-  height: 100px;
+  width: 120px; /* Adjust logo size */
+  height: 120px;
 }
 
 /* Navigation Links */
 .nav-links {
   display: flex;
-  gap: 20px;
+  gap: 10px;
 }
 
 .nav-links a {
@@ -55,11 +55,16 @@ body {
   font-weight: 600;
   color: #1e3a8a; /* Matches logo color */
   padding: 10px 15px;
-  transition: color 0.3s ease-in-out;
+  border-radius: 6px; /* Rounded edges for hover effect */
+  transition: all 0.3s ease-in-out;
 }
 
 .nav-links a:hover {
-  text-decoration: underline;
+  background-color: #1e3a8a; /* Background color on hover */
+  color: white; /* Change text color */
+  text-decoration: none; /* Remove underline */
+  padding: 10px 18px; /* Slight padding increase */
+  border-radius: 8px; /* Soft rounded edges */
 }
 
 /* Mobile Responsive Navbar */
@@ -72,9 +77,20 @@ body {
 
 }
 
+/* Fix spacing under navbar */
+.page-container {
+  margin-top: 120px; /* Adjust this value based on your navbar height */
+  padding: 20px;
+  text-align: center;
+}
+
 
 /* Home Page Layout */
 .home-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center content */
+  align-items: center;
   text-align: center;
   margin: 100px auto;
   padding: 30px;
@@ -84,14 +100,22 @@ body {
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsive Layout */
+/* 🖥️ Large Screens */
+@media (min-width: 1024px) {
+  .home-container {
+    margin-top: 120px; /* Push down slightly */
+  }
+}
+
+/* 📱 Small Screens (Mobile) */
 @media (max-width: 768px) {
   .home-container {
-    margin: 50px auto;
+    margin-top: 180px; /* Push content downward */
     padding: 20px;
     max-width: 90%;
   }
 }
+
 
 h1 {
   color: #10204d;
@@ -107,5 +131,81 @@ p {
 /* Highlight Effect */
 .highlight {
   color: #1e3a8a;
+}
+
+/* Admin Dashboard Layout */
+.dashboard-container {
+  text-align: center;
+  padding: 20px;
+  max-width: 1000px;
+  background: transparent;
+  border-radius: 12px;
+  position: absolute; /* Ensures it starts at the top */
+  top: 0; /* Removes any space above */
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0; /* Ensures no extra margin */
+  width: 100%;
+  max-width: 1000px;
+}
+
+/* Header Section: Logo & Text */
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px; /* Space between logo and text */
+  margin-top: 0; /* Ensures no spacing */
+  padding-top: 5px; /* Adjust spacing if needed */
+}
+
+/* Admin Logo */
+.dashboard-logo {
+  width: 120px; /* Adjust size */
+}
+
+/* Admin Menu */
+.admin-menu {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.admin-menu a {
+  text-decoration: none;
+  font-weight: 600;
+  color: #10204d;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: 1px solid #10204d;
+  transition: 0.3s ease-in-out;
+}
+
+.admin-menu a:hover {
+  background: #10204d;
+  color: white;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .dashboard-container {
+    max-width: 95%;
+    top: 10px; /* Adjust for smaller screens */
+  }
+
+  /* Stack logo and text in mobile view */
+  .dashboard-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .dashboard-logo {
+    width: 80px; /* Smaller logo for mobile */
+  }
+
+  .admin-menu {
+    flex-direction: column;
+  }
 }
 
