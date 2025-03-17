@@ -7,6 +7,7 @@ import ContactView from '@/views/ContactView.vue'
 import JobListingsView from '@/views/JobListingsView.vue'
 import LoginView from '@/views/LoginView.vue'
 import AdminDashboardView from '@/views/AdminDashboardView.vue'
+import ApplicantDashboardView from '@/views/ApplicantDashboardView.vue'
 
 const routes = [
   { path: '/', name: 'Home', component: HomeView },
@@ -14,7 +15,8 @@ const routes = [
   { path: '/contact', name: 'Contact', component: ContactView },
   { path: '/jobs', name: 'JobListings', component: JobListingsView },
   { path: '/login', name: 'Login', component: LoginView },
-  { path: '/admin', name: 'AdminDashboard', component: AdminDashboardView }
+  { path: '/admin', name: 'AdminDashboard', component: AdminDashboardView },
+  { path: '/applicant', name: 'ApplicantDashboard', component: ApplicantDashboardView }
 ]
 
 const router = createRouter({
