@@ -5,6 +5,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
+  background-color: #F2FBFF;
 }
 
 /* App Container */
@@ -123,6 +124,56 @@ h1 {
   font-weight: 700;
 }
 
+h2 {
+  margin-top: 20px;
+  color: #10204d;
+  font-size: 1.7rem;
+  font-weight: 600;
+}
+
+table {
+  padding: 10px;
+  font-family: 'Poppins', sans-serif;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  color: #10204d;
+}
+
+.custom-input {
+  padding: 10px; /* Inner space around the text */
+  margin: 10px 2px; /* Outer spacing for separation */
+  border: 1px solid #ccc; /* Border color and thickness */
+  border-radius: 5px; /* Rounded corners */
+  font-size: 16px; /* Font size */
+}
+
+.custom-input:focus {
+  border-color: #007bff; /* Change border color on focus */
+  outline: none; /* Remove default outline */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a glowing effect */
+}
+
+.custom-button{
+  background-color: #1e3a8a;
+  color: white;
+  border: none;
+  padding: 10px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 2px 3px;
+}
+
+th {
+  background-color: #ADE4FD;
+  width: 150px;
+}
+
+td {
+  background-color: #ffffff;
+  width: 150px;
+}
+
 p {
   font-size: 1.3rem;
   color: #374151;
@@ -209,3 +260,10 @@ p {
   }
 }
 
+pad {
+  padding: 20px;
+}
+
+m6 {
+  margin: 6px;
+}
