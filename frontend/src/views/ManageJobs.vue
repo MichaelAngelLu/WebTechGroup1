@@ -5,6 +5,7 @@ import { ref } from 'vue';
 const jobListings = ref([
   { id: 1, title: "Software Engineer", location: "Manila", status: "Active" },
   { id: 2, title: "HR Specialist", location: "Cebu", status: "Closed" },
+  { id: 3, title: "HR Staff", location: "Mandaluyong", status: "Active" },
 ]);
 
 // Reactive variables for the modal
