@@ -15,7 +15,7 @@
     <!-- Admin Menu -->
     <div class="admin-menu">
       <RouterLink to="/admin/jobs">Manage Jobs</RouterLink>
-      <RouterLink to="/admin/applications">Applications</RouterLink>
+      <RouterLink to="/admin/view-applications">Applications</RouterLink>
       <RouterLink to="/admin/users">Manage Users</RouterLink>
       <RouterLink to="/admin/settings">Settings</RouterLink>
     </div>
