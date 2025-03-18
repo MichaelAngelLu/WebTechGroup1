@@ -11,6 +11,7 @@ import ApplicantDashboardView from '@/views/ApplicantDashboardView.vue'
 import AdminSettingsView from '@/views/admin/AdminSettingsView.vue'
 import ManageUsersView from '@/views/admin/ManageUsersView.vue'
 import ViewApplications from '@/views/admin/ViewApplications.vue'
+import ManageJobs from '@/views/admin/ManageJobs.vue'
 
 
 const routes = [
@@ -24,6 +25,7 @@ const routes = [
   { path: '/admin/settings', name: 'AdminSettings', component: AdminSettingsView},
   { path: '/admin/users', name: 'ManageUSers', component: ManageUsersView},
   { path: '/admin/view-applications', name: 'ViewApplications', component: ViewApplications},
+  { path: '/admin/manage-jobs', name: 'Manage Jobs', component: ManageJobs},
 ]
 
 const router = createRouter({
