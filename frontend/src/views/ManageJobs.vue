@@ -4,8 +4,7 @@ import { ref } from 'vue';
 // Example data for job listings
 const jobListings = ref([
   { id: 1, title: "Software Engineer", location: "Manila", status: "Active" },
-  { id: 2, title: "HR Specialist", location: "Cebu", status: "Closed" },
-  { id: 3, title: "HR Staff", location: "Mandaluyong", status: "Active" },
+  { id: 2, title: "HR Specialist", location: "Cebu", status: "Closed" }
 ]);
 
 // Reactive variables for the modal
@@ -47,32 +46,19 @@ const editJob = (id) => {
 </script>
 
 <style scoped>
-  .search-container {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
-  
-  .search-container input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    width: 60%;
-  }
-  
-  .search-container button {
-    background-color: #1e3a8a;
-    color: white;
+
+  .action-button {
+    background: none;
     border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
+    color: #1e3a8a;
     cursor: pointer;
+    text-decoration: none; /* Removes underline if treated like a link */
   }
-  
-  .search-container button:hover {
-    background: #10204d;
+
+  .action-button:hover {
+    text-decoration: underline; 
   }
+
   </style>
 
 <template>
@@ -114,8 +100,8 @@ const editJob = (id) => {
             <td>{{ job.location }}</td>
             <td>{{ job.status }}</td>
             <td>
-              <button @click="editJob(job.id)">Edit</button>
-              <button @click="deleteJob(job.id)">Delete</button>
+              <button class="action-button" @click="editJob(job.id)">Edit</button>
+              <button class="action-button" @click="deleteJob(job.id)">Delete</button>
             </td>
           </tr>
         </tbody>

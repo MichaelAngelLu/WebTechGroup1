@@ -125,15 +125,16 @@ h1 {
 }
 
 h2 {
-  margin-top: 20px;
+  margin-top: 10px;
   color: #10204d;
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   font-weight: 600;
 }
 
 table {
   padding: 10px;
   font-family: 'Poppins', sans-serif;
+  font-size: 0.8rem;
   margin-left: auto;
   margin-right: auto;
   text-align: center;
@@ -145,7 +146,7 @@ table {
   margin: 10px 2px; /* Outer spacing for separation */
   border: 1px solid #ccc; /* Border color and thickness */
   border-radius: 5px; /* Rounded corners */
-  font-size: 16px; /* Font size */
+  font-size: 12px; /* Font size */
 }
 
 .custom-input:focus {
