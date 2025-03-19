@@ -10,7 +10,12 @@ const props = defineProps({
   },
   variant: {
     type: String,
-    default: 'primary' // you can switch between 'primary', 'secondary', etc.
+    default: 'primary'
+  },
+  size: {
+    type: String,
+    default: 'md', // default to medium size
+    validator: (val) => ['xs', 'sm', 'md', 'lg'].includes(val)
   }
 })
 
@@ -31,7 +36,9 @@ const emit = defineEmits(['click'])
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s ease;
+  margin-top: 5px;
 }
+
 
 /* Primary button */
 .primary {

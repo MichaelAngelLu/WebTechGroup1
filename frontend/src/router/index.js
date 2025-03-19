@@ -38,14 +38,12 @@ const routes = [
     path: '/admin',
     component: AdminLayout,
     children: [
-      { path: '', name: 'AdminDashboard', component: AdminDashboardView },
       { path: 'manage-jobs', name: 'ManageJobs', component: ManageJobs },
       { path: 'view-applications', name: 'ViewApplications', component: ViewApplications },
       { path: 'users', name: 'ManageUsers', component: ManageUsersView },
       { path: 'settings', name: 'AdminSettings', component: AdminSettingsView },
     ]
   },
-
   // Applicant Layout + Routes
   {
     path: '/applicant',
