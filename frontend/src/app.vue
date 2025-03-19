@@ -7,7 +7,7 @@ import Footer from '@/components/Footer.vue'
 const route = useRoute()
 
 // Pages where the Navbar should be hidden
-const hideNavbarOn = ['/applicant', '/admin', '/playground']
+const hideNavbarOn = ['/applicant', '/admin']
 </script>
 
 <template>

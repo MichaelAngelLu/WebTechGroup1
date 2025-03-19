@@ -1,53 +1,53 @@
 <script setup>
 const props = defineProps({
-  modelValue: String, // or Array depending on your use case
-  label: String,
+  modelValue: String,
   options: {
     type: Array,
-    default: () => [],
-  }
+    required: true
+  },
+  label: String,
 })
 
 const emit = defineEmits(['update:modelValue'])
 
 const selected = computed({
   get: () => props.modelValue,
-  set: (value) => emit('update:modelValue', value)
+  set: (val) => emit('update:modelValue', val)
 })
 </script>
 
 <template>
-  <div>
+  <div class="select-group">
     <label v-if="label">{{ label }}</label>
     <select v-model="selected">
-      <option v-for="option in options" :key="option.value" :value="option.value">
-        {{ option.label }}
-      </option>
+      <option disabled value="">Select an option</option>
+      <option v-for="option in options" :key="option" :value="option">{{ option }}</option>
     </select>
   </div>
 </template>
 
-  
-  <style scoped>
-  .select-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 12px;
-  }
-  .select-group label {
-    margin-bottom: 4px;
-    font-weight: 600;
-    color: #1e3a8a;
-  }
-  .select-group select {
-    padding: 10px;
-    border: 1px solid #cbd5e1;
-    border-radius: 5px;
-    font-size: 1rem;
-  }
-  .select-group select:focus {
-    outline: none;
-    border-color: #1e3a8a;
-  }
-  </style>
-  
+<style scoped>
+.select-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+label {
+  font-weight: 600;
+  color: #1e3a8a;
+}
+
+select {
+  padding: 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+select:focus {
+  border-color: #1e3a8a;
+  outline: none;
+}
+</style>

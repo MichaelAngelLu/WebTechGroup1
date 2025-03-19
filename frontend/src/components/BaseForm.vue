@@ -1,4 +1,6 @@
 <script setup>
+import { computed } from 'vue'
+
 const props = defineProps({
   modelValue: {
     type: Object,
@@ -8,43 +10,57 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue'])
 
-// Computed proxy for the form data
 const formData = computed({
   get: () => props.modelValue,
   set: (val) => emit('update:modelValue', val)
 })
 
-// Emit submit event
 function handleSubmit(e) {
   e.preventDefault()
   emit('submit', formData.value)
 }
 </script>
 
+
 <template>
-  <form @submit="handleSubmit">
-    <!-- Example slot to allow flexible input fields -->
+  <form @submit="handleSubmit" class="base-form">
+    <!-- Flexible slot for injecting fields -->
     <slot :formData="formData"></slot>
 
+  <!-- fallback button -->
+  <template v-if="$slots.default === undefined">
     <button type="submit">Submit</button>
+  </template>
+
   </form>
 </template>
 
 <style scoped>
-form {
+.base-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: .2rem;
+  background: #ffffff;
+  padding: 30px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  max-width: 500px;
+  margin: 0 auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
-button {
+
+.submit-btn {
   background-color: #1e3a8a;
-  color: #fff;
-  padding: 10px;
+  color: #ffffff;
+  padding: 12px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
+  font-size: 16px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
-button:hover {
+
+.submit-btn:hover {
   background-color: #10204d;
 }
 </style>
