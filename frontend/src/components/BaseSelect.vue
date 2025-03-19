@@ -1,23 +1,32 @@
+<script setup>
+const props = defineProps({
+  modelValue: String, // or Array depending on your use case
+  label: String,
+  options: {
+    type: Array,
+    default: () => [],
+  }
+})
+
+const emit = defineEmits(['update:modelValue'])
+
+const selected = computed({
+  get: () => props.modelValue,
+  set: (value) => emit('update:modelValue', value)
+})
+</script>
+
 <template>
-    <div class="select-group">
-      <label v-if="label">{{ label }}</label>
-      <select
-        v-model="modelValue"
-        @change="$emit('update:modelValue', $event.target.value)"
-      >
-        <option value="" disabled>Select an option</option>
-        <option v-for="option in options" :key="option" :value="option">{{ option }}</option>
-      </select>
-    </div>
-  </template>
-  
-  <script setup>
-  defineProps({
-    label: String,
-    options: Array,
-    modelValue: String,
-  });
-  </script>
+  <div>
+    <label v-if="label">{{ label }}</label>
+    <select v-model="selected">
+      <option v-for="option in options" :key="option.value" :value="option.value">
+        {{ option.label }}
+      </option>
+    </select>
+  </div>
+</template>
+
   
   <style scoped>
   .select-group {

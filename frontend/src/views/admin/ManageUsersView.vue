@@ -9,11 +9,3 @@
   </div>
 </template>
 
-<style scoped>
-.admin-page-container {
-  max-width: 1000px;
-  margin: 60px auto 0;
-  padding: 20px;
-  text-align: center;
-}
-</style>
