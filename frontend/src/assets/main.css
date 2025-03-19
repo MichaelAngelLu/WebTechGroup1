@@ -2,6 +2,7 @@
 
 /* Global Styles */
 body {
+  height: 100%;
   margin: 0;
   padding: 0;
   font-family: 'Poppins', sans-serif;
@@ -9,11 +10,16 @@ body {
 
 /* App Container */
 #app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   font-weight: normal;
 }
+
+
 
 /* Centered Navbar Styling */
 .navbar {
@@ -207,12 +213,15 @@ p {
 
   .dashboard-logo {
     width: 80px; /* Smaller logo for mobile */
+    flex-direction: column;
   }
 
   .admin-menu {
     flex-direction: column;
   }
 }
+
+
 
 /* Table Styling */
 table {
@@ -243,8 +252,13 @@ form {
 @media (max-width: 768px) {
   .dashboard-header {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 10px;
+  }
+
+  .dashboard-logo {
+    align-items: center;
+
   }
 
   .admin-menu {
@@ -310,4 +324,19 @@ pad {
 m6 {
   margin: 6px;
 }
+
+#app, .layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.dashboard-container,
+.admin-page-container,
+.page-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
 
