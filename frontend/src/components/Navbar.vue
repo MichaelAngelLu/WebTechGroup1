@@ -10,7 +10,6 @@
         <RouterLink to="/contact">Contact</RouterLink>
         <RouterLink to="/jobs">Jobs</RouterLink>
         <RouterLink to="/login">Login</RouterLink>
-        <RouterLink to="/playground">Playground</RouterLink>
       </nav>
     </header>
   </template>
