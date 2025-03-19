@@ -7,7 +7,7 @@ import { RouterView } from 'vue-router'
   <div class="dashboard-container">
     <!-- Shared Header -->
     <div class="dashboard-header">
-      <img src="@/assets/logo.svg" alt="JuanJobsPH Logo" class="dashboard-logo" />
+      <img src="@/assets/logo.svg" alt="JuanJobsPH Logo" class="logo" />
       <div>
         <h1>Admin Dashboard</h1>
         <p>Manage job listings, applications, and users.</p>

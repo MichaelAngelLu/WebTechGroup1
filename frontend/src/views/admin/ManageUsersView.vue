@@ -16,15 +16,18 @@
               </span>
             </td>
             <td>
-              <BaseButton label="Edit" size="xs" @click="editUser(user.id)" />
-              <!-- Only show Delete for Admin users -->
-              <BaseButton
-                v-if="user.role === 'Staff'"
-                label="Delete"
-                size="sm"
-                variant="secondary"
-                @click="deleteUser(user.id)"
-              />
+              <div class="action-buttons">
+                <!-- Edit Button -->
+                <BaseButton label="Edit" size="sm" variant="primary" @click="editUser(user.id)" />
+                <!-- Delete Button only for Staff -->
+                <BaseButton
+                  v-if="user.role === 'Staff'"
+                  label="Delete"
+                  size="sm"
+                  variant="danger"
+                  @click="deleteUser(user.id)"
+                />
+              </div>
             </td>
           </tr>
         </template>
@@ -49,7 +52,7 @@ const editUser = (id) => {
 }
 
 const deleteUser = (id) => {
-  alert(`Deleted Admin user ID: ${id}`)
+  alert(`Deleted user ID: ${id}`)
 }
 </script>
 
@@ -66,4 +69,20 @@ const deleteUser = (id) => {
 .role-badge.staff {
   background-color: #64748b;
 }
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Stack vertically on small screens */
+@media (max-width: 600px) {
+  .action-buttons {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
 </style>
