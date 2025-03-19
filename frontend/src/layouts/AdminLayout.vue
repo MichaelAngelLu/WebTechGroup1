@@ -13,7 +13,7 @@ import { RouterView } from 'vue-router'
         <p>Manage job listings, applications, and users.</p>
       </div>
     </div>
-
+    <div>
     <!-- Shared Admin Menu -->
     <div class="admin-menu">
       <RouterLink to="/admin/manage-jobs">Manage Jobs</RouterLink>
@@ -21,7 +21,7 @@ import { RouterView } from 'vue-router'
       <RouterLink to="/admin/users">Manage Users</RouterLink>
       <RouterLink to="/admin/settings">Settings</RouterLink>
     </div>
-
+  </div>
     <!-- This is where ManageJobs or any other page will be injected -->
     <RouterView />
   </div>
