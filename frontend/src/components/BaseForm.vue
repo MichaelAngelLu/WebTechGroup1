@@ -8,7 +8,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'submit'])
 
 const formData = computed({
   get: () => props.modelValue,
@@ -16,24 +16,17 @@ const formData = computed({
 })
 
 function handleSubmit(e) {
-  e.preventDefault()
+  e.preventDefault() // ✅ Only one form submission
   emit('submit', formData.value)
 }
 </script>
 
-
 <template>
   <form @submit="handleSubmit" class="base-form">
-    <!-- Flexible slot for injecting fields -->
     <slot :formData="formData"></slot>
-
-  <!-- fallback button -->
-  <template v-if="$slots.default === undefined">
-    <button type="submit">Submit</button>
-  </template>
-
   </form>
 </template>
+
 
 <style scoped>
 .base-form {
