@@ -51,7 +51,7 @@ const form = ref({
 })
 
 const loading = ref(false)
-const showSuccess = ref(false) // ✅ trigger success modal
+const showSuccess = ref(false)
 const errorMessage = ref('')
 
 async function handleSubmit() {
@@ -64,7 +64,7 @@ async function handleSubmit() {
     return;
   }
 
-  const { ok, data } = await apiRequest('register', 'POST', {
+  const { ok, data } = await apiRequest('applicants/register', 'POST', {
     firstName: form.value.firstName,
     lastName: form.value.lastName,
     email: form.value.email,
@@ -73,6 +73,7 @@ async function handleSubmit() {
 
   if (ok) {
     showSuccess.value = true;
+    errorMessage.value = '';
   } else {
     errorMessage.value = data.message;
   }
@@ -86,15 +87,11 @@ function goToLogin() {
 }
 </script>
 
-
-
 <style scoped>
 .error {
   color: red;
   margin-top: 10px;
 }
-
-/* Modal Styles */
 .modal {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
@@ -103,7 +100,6 @@ function goToLogin() {
   align-items: center;
   justify-content: center;
 }
-
 .modal-content {
   background: white;
   padding: 2rem;
