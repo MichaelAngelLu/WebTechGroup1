@@ -1,4 +1,6 @@
 <script setup>
+import { computed } from 'vue'
+
 const props = defineProps({
   modelValue: String,
   options: {
@@ -21,7 +23,13 @@ const selected = computed({
     <label v-if="label">{{ label }}</label>
     <select v-model="selected">
       <option disabled value="">Select an option</option>
-      <option v-for="option in options" :key="option" :value="option">{{ option }}</option>
+      <option
+        v-for="option in options"
+        :key="option.value"
+        :value="option.value"
+      >
+        {{ option.label }}
+      </option>
     </select>
   </div>
 </template>
@@ -30,24 +38,23 @@ const selected = computed({
 .select-group {
   display: flex;
   flex-direction: column;
-  gap: 4px;
 }
 
-label {
+.select-group label {
   font-weight: 600;
-  color: #1e3a8a;
+  margin-bottom: 5px;
+  text-align: left;
 }
 
-select {
+.select-group select {
   padding: 10px;
   border: 1px solid #cbd5e1;
   border-radius: 6px;
   font-size: 1rem;
-  transition: border-color 0.3s;
-}
-
-select:focus {
-  border-color: #1e3a8a;
-  outline: none;
+  width: 100%;
+  min-height: 42px;
+  box-sizing: border-box;
+  appearance: none;
+  background: white;
 }
 </style>

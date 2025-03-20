@@ -13,8 +13,12 @@
             <td>{{ job.status }}</td>
             <td>
               <div class="action-buttons">
-                <!-- Apply Button -->
-                <BaseButton label="Apply" size="sm" variant="primary" @click="applyForJob(job.id)" />
+                <BaseButton
+                  label="Apply"
+                  size="sm"
+                  variant="primary"
+                  @click="applyForJob(job.id)"
+                />
               </div>
             </td>
           </tr>
@@ -26,8 +30,11 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import BaseTable from '@/components/BaseTable.vue'
 import BaseButton from '@/components/BaseButton.vue'
+
+const router = useRouter()
 
 const jobListings = ref([
   { id: 1, title: "Software Engineer", location: "Manila", status: "Active" },
@@ -35,7 +42,7 @@ const jobListings = ref([
 ])
 
 const applyForJob = (id) => {
-  alert(`Applying for job ID: ${id}`)
+  router.push({ path: '/applicant/job-application', query: { jobId: id } })
 }
 </script>
 
@@ -47,7 +54,6 @@ const applyForJob = (id) => {
   flex-wrap: wrap;
 }
 
-/* Stack vertically on small screens */
 @media (max-width: 600px) {
   .action-buttons {
     flex-direction: column;
