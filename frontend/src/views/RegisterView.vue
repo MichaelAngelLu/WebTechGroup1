@@ -1,14 +1,26 @@
 <template>
   <div>
     <main class="page-container">
-      <h1>Login</h1>
-      <p>Login to manage your Applications and Profile</p>
+      <h1>Create Account</h1>
+      <p>Sign up to manage your Applications and Profile</p>
     </main>
   </div>
 
   <div class="login-card">
     <BaseForm v-model="form" @submit="handleSubmit">
       <template #default="{ formData }">
+
+        <BaseInput 
+          v-model="formData.firstName" 
+          label="First Name" 
+          placeholder="Enter your first name" 
+        />
+
+        <BaseInput 
+          v-model="formData.lastName" 
+          label="Last Name" 
+          placeholder="Enter your last name" 
+        />
 
         <BaseInput 
           v-model="formData.email" 
@@ -20,44 +32,52 @@
           v-model="formData.password" 
           label="Password" 
           type="password" 
-          placeholder="Enter your password" 
+          placeholder="Create a password" 
         />
 
-        <BaseButton type="submit" label="Login" block />
+        <BaseInput 
+          v-model="formData.confirmPassword" 
+          label="Confirm Password" 
+          type="password" 
+          placeholder="Re-enter your password" 
+        />
 
-        <div class="forgot-password">
-          <a href="#">Forgot Password?</a>
-        </div>
+        <BaseButton type="submit" label="Create Account" block />
 
         <div class="divider">OR</div>
 
         <button class="google-btn" @click="signInWithGoogle">
           <img src="@/assets/google-icon.svg" alt="Google" />
-          Sign in with Google
+          Sign up with Google
         </button>
 
       </template>
     </BaseForm>
 
-    <!-- Create Account -->
+    <!-- Already have account -->
     <div class="create-account">
-      <span>Don't have an account?</span>
-      <router-link to="/register">Create one</router-link> <!-- integrated route -->
+      <span>Already have an account?</span>
+      <router-link to="/login">Login</router-link>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 import BaseForm from '@/components/BaseForm.vue'
 import BaseInput from '@/components/BaseInput.vue'
 import BaseButton from '@/components/BaseButton.vue'
 
-const form = ref({ email: '', password: '' })
+const form = ref({ 
+  firstName: '', 
+  lastName: '', 
+  email: '', 
+  password: '', 
+  confirmPassword: '' 
+})
 
 function handleSubmit(data) {
-  console.log('Login submitted', data)
+  console.log('Account created', data)
 }
 
 function signInWithGoogle() {
@@ -77,17 +97,6 @@ function signInWithGoogle() {
   padding: 2rem;
   border-radius: 8px;
   background: #fff;
-}
-
-.forgot-password {
-  margin-top: 0;
-  text-align: right;
-}
-
-.forgot-password a {
-  font-size: 0.9rem;
-  color: #1e3a8a;
-  text-decoration: none;
 }
 
 .divider {

@@ -6,7 +6,7 @@ import AboutView from '@/views/AboutView.vue'
 import ContactView from '@/views/ContactView.vue'
 import JobListingsView from '@/views/JobListingsView.vue'
 import LoginView from '@/views/LoginView.vue'
-
+import RegisterView from '@/views/RegisterView.vue'
 
 // Layouts
 import AdminLayout from '@/layouts/AdminLayout.vue'
@@ -32,6 +32,7 @@ const routes = [
   { path: '/contact', name: 'Contact', component: ContactView },
   { path: '/jobs', name: 'JobListings', component: JobListingsView },
   { path: '/login', name: 'Login', component: LoginView },
+  { path: '/register', name: 'Register', component: RegisterView }, // <-- Added Register route
 
   // Admin Layout + Routes
   {
