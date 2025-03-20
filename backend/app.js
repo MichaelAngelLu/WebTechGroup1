@@ -1,12 +1,13 @@
 const express = require('express');
-const validateToken = require('./middlewares/validateToken'); // Import the middleware
-const app = express();
+const cors = require('cors');
+const authRoutes = require('./routes/authRoutes');
 
-// Example of applying the middleware to a protected route
-app.get('/profile', validateToken, (req, res) => {
-  res.send(`Welcome, ${req.user.email}. This is your profile.`);
-});
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+app.use('/api', authRoutes);
 
 app.listen(3000, () => {
-  console.log('Server is running on http://localhost:3000');
+  console.log('✅ Server running on http://localhost:3000');
 });

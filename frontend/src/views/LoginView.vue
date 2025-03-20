@@ -54,16 +54,47 @@ import BaseForm from '@/components/BaseForm.vue'
 import BaseInput from '@/components/BaseInput.vue'
 import BaseButton from '@/components/BaseButton.vue'
 
+const router = useRouter()
 const form = ref({ email: '', password: '' })
+const showSuccess = ref(false)
 
-function handleSubmit(data) {
-  console.log('Login submitted', data)
+async function handleSubmit(data) {
+  try {
+    const res = await fetch('http://localhost:3000/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: data.email,
+        password: data.password
+      })
+    });
+
+    const result = await res.json();
+
+    if (res.ok) {
+      showSuccess.value = true;
+      setTimeout(() => {
+        if (result.user.role === 'admin') {
+          router.push('/admin');
+        } else {
+          router.push('/applicant');
+        }
+      }, 1500);
+    } else {
+      alert(result.message);
+    }
+  } catch (err) {
+    console.error('Fetch failed:', err);
+    alert('❌ Login failed.');
+  }
 }
+
 
 function signInWithGoogle() {
   alert('Redirect to Google OAuth...')
 }
 </script>
+
 
 <style scoped>
 .page-container {
