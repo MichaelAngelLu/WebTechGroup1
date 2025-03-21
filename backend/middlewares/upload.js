@@ -1,40 +1,42 @@
-const multer = require('multer');
-const { ref, uploadBytes, getDownloadURL } = require('firebase/storage');
-const storage = require('./firebase/initFirebase');
+const multer = require("multer");
+const AWS = require("aws-sdk");
 
-const uploadToFirebase = async (file) => {
-    const fileRef = ref(storage, `uploads/${file.originalname}`);
-    const fileBuffer = Buffer.from(file.buffer);
+// Configure AWS S3
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID, // Load from .env
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY, // Load from .env
+  region: process.env.AWS_REGION, // Load from .env (e.g., "us-east-1")
+});
 
-    //Upload file
-    await uploadBytes(fileRef, fileBuffer);
-    return await getDownloadURL(fileRef); // Retrieve the URL
+// Function to upload file to AWS S3
+const uploadToS3 = async (file) => {
+  const params = {
+    Bucket: process.env.AWS_BUCKET_NAME, // Load from .env
+    Key: `uploads/${file.originalname}`, // File path in S3
+    Body: file.buffer, // File content
+    ContentType: file.mimetype, // File type
+  };
+
+  // Upload file to S3
+  const data = await s3.upload(params).promise();
+  return data.Location; // Return the file's S3 URL
 };
-
-// Define storage configuration
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, 'uploads/'); // Directory to store files
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, Date.now() + '-' + file.originalname); // Unique file name
-//   },
-// });
 
 // Validation for file size and type
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+  const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true); // Accept the file
   } else {
-    cb(new Error('Invalid file type. Only JPG, PNG, and PDF are allowed!'), false);
+    cb(new Error("Invalid file type. Only JPG, PNG, and PDF are allowed!"), false); // Reject the file
   }
 };
 
+// Configure Multer for file uploads
 const upload = multer({
-  storage: storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB limit
+  storage: multer.memoryStorage(), // Store files in memory temporarily
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB size limit
   fileFilter: fileFilter,
 });
 
-module.exports = upload;
+module.exports = { upload, uploadToS3 };

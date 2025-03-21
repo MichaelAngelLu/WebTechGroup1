@@ -1,5 +1,11 @@
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from "../firebase/initFirebase.js"; // Initialize Firebase Storage
+import AWS from "aws-sdk";
+
+// Configure AWS S3
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID, // AWS Access Key from .env
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY, // AWS Secret Key from .env
+  region: process.env.AWS_REGION, // Region of your S3 bucket
+});
 
 // Handle file upload
 export const uploadFile = async (req, res) => {
@@ -11,24 +17,24 @@ export const uploadFile = async (req, res) => {
 
     console.log("File detected:", req.file); // Log the file object
 
-    // Create a reference to the file in Firebase Storage
-    const fileRef = ref(storage, `files/${req.file.originalname}`);
-    console.log("Created file reference in Firebase Storage.");
+    // Prepare S3 upload parameters
+    const params = {
+      Bucket: process.env.AWS_BUCKET_NAME, // Replace with your bucket name
+      Key: `files/${req.file.originalname}`, // File path in the bucket
+      Body: req.file.buffer, // File content
+      ContentType: req.file.mimetype, // File type
+    };
 
-    // Upload the file to Firebase Storage
-    await uploadBytes(fileRef, req.file.buffer);
-    console.log("File uploaded to Firebase Storage.");
-
-    // Get the public download URL for the uploaded file
-    const downloadURL = await getDownloadURL(fileRef);
-    console.log("Generated download URL:", downloadURL);
+    // Upload the file to AWS S3
+    const data = await s3.upload(params).promise();
+    console.log("File uploaded to S3:", data.Location);
 
     res.status(200).json({
       message: "File uploaded successfully!",
-      downloadUrl: downloadURL,
+      downloadUrl: data.Location, // Public URL for the file
     });
   } catch (error) {
-    console.error("Error uploading file:", error.code, error.message, error.customData);
+    console.error("Error uploading file:", error);
     res.status(500).json({ error: "Failed to upload file!", details: error.message });
   }
 };
@@ -38,18 +44,22 @@ export const getFile = async (req, res) => {
   try {
     const filename = req.params.filename;
 
-    // Create a reference to the file in Firebase Storage
-    const fileRef = ref(storage, `files/${filename}`);
+    // Generate a signed URL for file retrieval
+    const params = {
+      Bucket: process.env.AWS_BUCKET_NAME, // Replace with your bucket name
+      Key: `files/${filename}`, // File path in the bucket
+      Expires: 60 * 5, // URL expiration time in seconds (5 minutes)
+    };
 
-    // Get the file's public download URL
-    const downloadURL = await getDownloadURL(fileRef);
+    const signedUrl = s3.getSignedUrl("getObject", params);
+    console.log("Generated signed URL:", signedUrl);
 
     res.status(200).json({
       message: "File retrieved successfully!",
-      downloadUrl: downloadURL,
+      downloadUrl: signedUrl,
     });
   } catch (error) {
     console.error("Error retrieving file:", error);
-    res.status(404).json({ error: "File not found in Firebase Storage!" });
+    res.status(404).json({ error: "File not found in S3!" });
   }
 };
