@@ -97,24 +97,25 @@ async function handleSubmit(data) {
 
 async function signInWithGoogle() {
   try {
+    // Trigger the Google sign-in popup
     const result = await signInWithPopup(auth, provider); // Google sign-in
     const user = result.user;
     
-    // Get the ID token from Firebase
+    // Get the Firebase ID token
     const idToken = await user.getIdToken();
     console.log('Google login success, ID Token:', idToken);
 
-    // Send the ID token to the backend for validation
+    // Send the ID token to your backend for validation
     const res = await fetch('http://localhost:3000/api/login/google', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ tokenId: idToken }),
+      body: JSON.stringify({ tokenId: idToken }),  // Send token to backend
     });
 
     const data = await res.json();
 
     if (res.ok && data.token) {
-      // Store the JWT token in localStorage (or Vuex, depending on your app)
+      // Store the JWT token received from backend in localStorage (or Vuex, if needed)
       localStorage.setItem('authToken', data.token);
 
       // Redirect the user based on their role
@@ -131,6 +132,7 @@ async function signInWithGoogle() {
     alert('❌ Google login failed.');
   }
 }
+
 </script>
 
 
