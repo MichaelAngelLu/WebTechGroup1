@@ -31,10 +31,12 @@
 
         <div class="divider">OR</div>
 
+        <!-- Google login button -->
         <button class="google-btn" @click="signInWithGoogle">
           <img src="@/assets/google-icon.svg" alt="Google" />
           Sign in with Google
         </button>
+        
 
       </template>
     </BaseForm>
@@ -53,11 +55,14 @@ import { useRouter } from 'vue-router'
 import BaseForm from '@/components/BaseForm.vue'
 import BaseInput from '@/components/BaseInput.vue'
 import BaseButton from '@/components/BaseButton.vue'
+import { auth, provider } from '@/firebase';
+import { signInWithPopup } from "firebase/auth"; 
 
 const router = useRouter()
 const form = ref({ email: '', password: '' })
-const showSuccess = ref(false)
 
+
+const showSuccess = ref(false);
 async function handleSubmit(data) {
   try {
     const res = await fetch('http://localhost:3000/api/login', {
@@ -72,7 +77,7 @@ async function handleSubmit(data) {
     const result = await res.json();
 
     if (res.ok) {
-      showSuccess.value = true;
+      showSuccess.value = true;  // Use showSuccess here
       setTimeout(() => {
         if (result.user.role === 'admin') {
           router.push('/admin');
@@ -90,8 +95,41 @@ async function handleSubmit(data) {
 }
 
 
-function signInWithGoogle() {
-  alert('Redirect to Google OAuth...')
+async function signInWithGoogle() {
+  try {
+    const result = await signInWithPopup(auth, provider); // Google sign-in
+    const user = result.user;
+    
+    // Get the ID token from Firebase
+    const idToken = await user.getIdToken();
+    console.log('Google login success, ID Token:', idToken);
+
+    // Send the ID token to the backend for validation
+    const res = await fetch('http://localhost:3000/api/login/google', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tokenId: idToken }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok && data.token) {
+      // Store the JWT token in localStorage (or Vuex, depending on your app)
+      localStorage.setItem('authToken', data.token);
+
+      // Redirect the user based on their role
+      if (data.user.role === 'admin') {
+        router.push('/admin');
+      } else {
+        router.push('/applicant');
+      }
+    } else {
+      alert('Google login failed');
+    }
+  } catch (error) {
+    console.error('Google login error:', error);
+    alert('❌ Google login failed.');
+  }
 }
 </script>
 

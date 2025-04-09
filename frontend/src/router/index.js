@@ -14,7 +14,6 @@ import AdminLayout from '@/layouts/AdminLayout.vue'
 import ApplicantLayout from '@/layouts/ApplicantLayout.vue'
 
 // Admin Pages
-import AdminDashboardView from '@/views/AdminDashboardView.vue'
 import AdminSettingsView from '@/views/admin/AdminSettingsView.vue'
 import ManageUsersView from '@/views/admin/ManageUsersView.vue'
 import ViewApplications from '@/views/admin/ViewApplications.vue'
