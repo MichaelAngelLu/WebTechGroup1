@@ -64,7 +64,7 @@ async function handleSubmit() {
     return;
   }
 
-  const { ok, data } = await apiRequest('applicants/register', 'POST', {
+  const { ok, data } = await apiRequest('/register', 'POST', {
     firstName: form.value.firstName,
     lastName: form.value.lastName,
     email: form.value.email,
