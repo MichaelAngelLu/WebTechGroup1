@@ -1,44 +1,41 @@
 <template>
-    <div class="layout">
-      <div class="content">
-        <main class="login-container">
-          <h1>Login</h1>
-          <form @submit.prevent="login">
-            <div class="input-group">
-              <label for="username">Username</label>
-              <input type="text" id="username" v-model="username" required>
-            </div>
-            <div class="input-group">
-              <label for="password">Password</label>
-              <input type="password" id="password" v-model="password" required>
-            </div>
-            <button type="submit" class="login-btn">Log In</button>
-          </form>
-        </main>
-      </div>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    name: "LoginPage",
-    data() {
-      return {
-        username: "",
-        password: ""
-      };
-    },
-    methods: {
-      login() {
-        if (this.username === "admin" && this.password === "password") {
-          localStorage.setItem("userToken", "authenticated");
-          this.$router.push("/");
-        } else {
-          alert("Invalid credentials");
-        }
+  <div>
+    <ErrorAlert v-if="showErrorAlert" message="Invalid credentials" />
+    <!-- Your login form here -->
+    <form @submit.prevent="login">
+      <input v-model="username" type="text" placeholder="Username" />
+      <input v-model="password" type="password" placeholder="Password" />
+      <button type="submit">Login</button>
+    </form>
+  </div>
+</template>
+
+<script>
+import ErrorAlert from './ErrorAlert'; // Ensure the correct path
+
+export default {
+  name: "LoginPage",
+  components: {
+    ErrorAlert
+  },
+  data() {
+    return {
+      username: '',
+      password: '',
+      showErrorAlert: false // flag to control error alert visibility
+    };
+  },
+  methods: {
+    login() {
+      if (this.username === "admin" && this.password === "password") {
+        localStorage.setItem("userToken", "authenticated");
+        this.$router.push("/");
+      } else {
+        this.showErrorAlert = true; // trigger the error alert
       }
     }
-  };
+  }
+};
   </script>
   
   <style>
