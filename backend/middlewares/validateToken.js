@@ -1,4 +1,3 @@
-// validateToken.js
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -12,7 +11,7 @@ function validateToken(req, res, next) {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // Attach the decoded user info to the request
+    req.user = decoded; // Attach decoded user info to the request object
     next(); // Proceed to the next middleware or route handler
   } catch (error) {
     res.status(403).json({ message: 'Invalid or expired token.' });
