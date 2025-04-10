@@ -21,7 +21,7 @@ const app = express();
 app.use(helmet());
 app.use(
   cors({
-    origin: 'http://localhost:5175',
+    origin: 'http://localhost:8080',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   })
@@ -55,7 +55,13 @@ app.get('/', (req, res) => {
 
 // Error Handling
 app.use(errorHandler);
+app.get('/api/test-error', (req, res, next) => {
+  const error = new Error('This is a test error');
+  error.status = 400; // Set a custom status code
+  next(error); // Pass the error to the errorHandler middleware
+});
 
+//Security Headers
 app.use((req, res, next) => {
   res.setHeader('X-XSS-Protection', '1; mode=block');
   next();
