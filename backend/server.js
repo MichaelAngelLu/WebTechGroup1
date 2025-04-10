@@ -1,56 +1,67 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const helmet = require("helmet");
-const session = require("express-session");
-const passport = require("./config/passport"); // Passport configuration
-const authRoutes = require("./routes/authRoutes");  // Auth-related routes (make sure routes are named correctly)
-const jobRoutes = require("./routes/jobRoutes");    // Job-related routes
-const userRoutes = require("./routes/userRoutes");
-const errorHandler = require("./middlewares/errorHandler"); // Global error handler
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import session from 'express-session';
+import passport from './config/passport.js';
+import authRoutes from './routes/authRoutes.js';
+import jobRoutes from './routes/jobRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+import fileRoutes from './routes/fileRoutes.js';
+import dotenv from 'dotenv';
+import errorHandler from './middlewares/errorHandler.js';
 
+// Initialize dotenv
+dotenv.config();
+
+// Initialize Express app
 const app = express();
 
 // Middleware setup
-app.use(helmet()); // Adds security-related HTTP headers
-app.use(cors({ 
-  origin: 'http://localhost:8080', // Allow only frontend URL to access API
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,
-})); // Enable cross-origin resource sharing with specific options
-app.use(express.json()); // Middleware to parse JSON requests
-
-// Session Middleware for Passport.js (important for maintaining session)
+app.use(helmet());
+app.use(
+  cors({
+    origin: 'http://localhost:8080',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+  })
+);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(
   session({
-    secret: process.env.SESSION_SECRET, // Ensure this is defined in .env
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
   })
 );
-
 app.use(passport.initialize());
-app.use(passport.session()); // Initialize session handling
+app.use(passport.session());
 
-// Route Handling
-app.use('/api', authRoutes); // Auth-related routes
-app.use('/api', jobRoutes);  // Job-related routes
-app.use('/api', userRoutes);  // Job-related routes
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/jobs', jobRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/files', (req, res, next) => {
+  console.log(`Request received at: ${req.url}`);
+  next();
+}, fileRoutes);
 
-// Home Route (testing endpoint)
-app.get("/", (req, res) => {
-  res.send("Welcome to the Google OAuth App!");
+
+// Home Route
+app.get('/', (req, res) => {
+  res.send('Welcome to JuanJobsPH Server!');
 });
 
-// Global Error Handling Middleware
+// Error Handling
 app.use(errorHandler);
 
-// Catch-all for undefined routes and return 404
+// Catch-all for undefined routes
 app.use((req, res) => {
-  res.status(404).send("Route not found");
+  res.status(404).json({ error: 'Route not found!' });
 });
 
-// Start the server
-app.listen(3000, () => {
-  console.log("✅ Server running on http://localhost:3000");
+// Start Server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`✅ Server is running on http://localhost:${PORT}`);
 });
