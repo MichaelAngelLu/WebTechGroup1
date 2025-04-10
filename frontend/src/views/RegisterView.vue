@@ -64,18 +64,23 @@ async function handleSubmit() {
     return;
   }
 
-  const { ok, data } = await apiRequest('/register', 'POST', {
+  console.log('Submitting form:', form.value); // Debugging: Check form data
+
+  const { ok, data } = await apiRequest('users/register', 'POST', {
     firstName: form.value.firstName,
     lastName: form.value.lastName,
     email: form.value.email,
     password: form.value.password
   });
 
+  console.log('API response:', { ok, data }); // Debugging: Check API response
+
   if (ok) {
     showSuccess.value = true;
     errorMessage.value = '';
   } else {
-    errorMessage.value = data.message;
+    console.error('Error response:', data); // Debugging: Log error response
+    errorMessage.value = data.message || 'An error occurred.';
   }
 
   loading.value = false;

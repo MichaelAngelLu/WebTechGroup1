@@ -12,13 +12,13 @@ const selectedUser = ref(null)
 
 // Fetch Users
 const fetchUsers = async () => {
-  const res = await fetch('http://localhost:3000/api/users')
+  const res = await fetch('http://localhost:3000/api/users/users')
   users.value = await res.json()
 }
 
 // Add User Handler
 const handleUserSubmit = async (formData) => {
-  const res = await fetch('http://localhost:3000/api/users', {
+  const res = await fetch('http://localhost:3000/api/users/users', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(formData)
