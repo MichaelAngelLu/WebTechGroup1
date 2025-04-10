@@ -20,7 +20,7 @@ const app = express();
 app.use(helmet());
 app.use(
   cors({
-    origin: 'http://localhost:8080',
+    origin: 'http://localhost:5175',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   })
@@ -54,6 +54,11 @@ app.get('/', (req, res) => {
 
 // Error Handling
 app.use(errorHandler);
+
+app.use((req, res, next) => {
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  next();
+});
 
 // Catch-all for undefined routes
 app.use((req, res) => {
