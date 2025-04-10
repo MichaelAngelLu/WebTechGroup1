@@ -65,7 +65,7 @@ const form = ref({ email: '', password: '' })
 const showSuccess = ref(false);
 async function handleSubmit(data) {
   try {
-    const res = await fetch('http://localhost:3000/api/auth/login', {
+    const res = await fetch('http://localhost:10000/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
