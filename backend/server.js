@@ -30,7 +30,7 @@ app.use(express.static(path.join(__dirname, '../frontend/dist')));
 app.use(helmet());
 app.use(
   cors({
-    origin: 'http://juanjobsph.onrender.com',
+    origin: 'https://juanjobsph.onrender.com',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   })
