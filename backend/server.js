@@ -11,11 +11,20 @@ import applicationRoutes from './routes/applicationRoutes.js'; // Import applica
 import dotenv from 'dotenv';
 import errorHandler from './middlewares/errorHandler.js';
 
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
 // Initialize dotenv
 dotenv.config();
 
 // Initialize Express app
 const app = express();
+
+// Serve frontend static files
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
 // Middleware setup
 app.use(helmet());
@@ -72,9 +81,14 @@ app.use((req, res) => {
   res.status(404).json({ error: 'Route not found!' });
 });
 
+// Catch-all: send index.html (for Vue routing)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
+});
+
 // Start Server
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`✅ Server is running on http://localhost:${PORT}`);
 });
 
