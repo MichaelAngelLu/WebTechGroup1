@@ -32,7 +32,7 @@ router.post('/register', async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
   try {
     const db = await connectDB();
-    const applicantsCollection = db.collection('applicants');
+    const applicantsCollection = db.collection('users');
 
     const existingUser = await applicantsCollection.findOne({ email });
     if (existingUser) {
@@ -45,11 +45,12 @@ router.post('/register', async (req, res) => {
       lastName,
       email,
       password: hashedPassword,
-      role: 'applicant'
+      role: 'applicant',
     });
 
     res.status(201).json({ message: 'Applicant account created successfully' });
   } catch (err) {
+    console.error('Error during applicant registration:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });

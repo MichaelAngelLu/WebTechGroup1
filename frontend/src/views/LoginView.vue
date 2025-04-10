@@ -65,7 +65,7 @@ const form = ref({ email: '', password: '' })
 const showSuccess = ref(false);
 async function handleSubmit(data) {
   try {
-    const res = await fetch('http://localhost:3000/api/login', {
+    const res = await fetch('http://localhost:3000/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -106,7 +106,7 @@ async function signInWithGoogle() {
     console.log('Google login success, ID Token:', idToken);
 
     // Send the ID token to your backend for validation
-    const res = await fetch('http://localhost:3000/api/login/google', {
+    const res = await fetch('http://localhost:3000/api/auth/auth/google', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ tokenId: idToken }),  // Send token to backend
