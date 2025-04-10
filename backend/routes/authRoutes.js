@@ -3,7 +3,7 @@ const passport = require('passport');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const connectDB = require('../db/mongoClient');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 // Google Login Route (using Passport)
 router.get(
