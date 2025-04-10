@@ -7,6 +7,7 @@ import authRoutes from './routes/authRoutes.js';
 import jobRoutes from './routes/jobRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import fileRoutes from './routes/fileRoutes.js';
+import applicationRoutes from './routes/applicationRoutes.js'; // Import application routes
 import dotenv from 'dotenv';
 import errorHandler from './middlewares/errorHandler.js';
 
@@ -45,7 +46,7 @@ app.use('/api/files', (req, res, next) => {
   console.log(`Request received at: ${req.url}`);
   next();
 }, fileRoutes);
-
+app.use('/api/applications', applicationRoutes); // Register the route
 
 // Home Route
 app.get('/', (req, res) => {

@@ -115,8 +115,32 @@ function handleFileUploadOtherDocs(event) {
   form.value.otherDocs = event.target.files[0]
 }
 
-function submitApplication() {
-  alert('Application submitted successfully!')
+async function submitApplication() {
+  const formData = new FormData()
+  formData.append('name', form.value.name)
+  formData.append('email', form.value.email)
+  formData.append('phone', form.value.phone)
+  formData.append('position', form.value.position)
+  formData.append('coverLetter', form.value.coverLetter)
+  if (form.value.resume) formData.append('resume', form.value.resume)
+  if (form.value.otherDocs) formData.append('otherDocs', form.value.otherDocs)
+
+  try {
+    const response = await fetch('http://localhost:3000/api/applications', {
+      method: 'POST',
+      body: formData
+    })
+
+    if (response.ok) {
+      alert('Application submitted successfully!')
+    } else {
+      const error = await response.json()
+      alert(`Error: ${error.message}`)
+    }
+  } catch (err) {
+    console.error('Error submitting application:', err)
+    alert('Failed to submit application. Please try again later.')
+  }
 }
 </script>
 
