@@ -3,10 +3,10 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const { ObjectId } = require('mongodb');
 const connectDB = require('../db/mongoClient');
-const isAdmin = require('../middlewares/isAdmin');
+const { isStaffOrAdmin, isAdmin } = require('../middlewares/authMiddleware');
 
 // ✅ REGISTER APPLICANT (Public)
-router.post('/register', async (req, res) => {
+router.post('/users/register', async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
   try {
     const db = await connectDB();
@@ -34,7 +34,7 @@ router.post('/register', async (req, res) => {
 });
 
 // ✅ CREATE USERS (Admin only)
-router.post('/users', async (req, res) => {
+router.post('/users', isAdmin, async (req, res) => {
   const { firstName, lastName, email, password, role } = req.body;
   try {
     const db = await connectDB();
@@ -61,7 +61,7 @@ router.post('/users', async (req, res) => {
 });
 
 // ✅ GET ALL USERS (Admin only)
-router.get('/users', async (req, res) => {
+router.get('/users', isStaffOrAdmin, async (req, res) => {
   try {
     const db = await connectDB();
     const usersCollection = db.collection('users');
@@ -73,7 +73,7 @@ router.get('/users', async (req, res) => {
 });
 
 // ✅ UPDATE USER (Admin only)
-router.put('/users/:id', async (req, res) => {
+router.put('/users/:id', isAdmin, async (req, res) => {
   const { id } = req.params;
   const { firstName, lastName, email, role } = req.body;
 
@@ -101,7 +101,7 @@ router.put('/users/:id', async (req, res) => {
 });
 
 // ✅ DELETE USER (Admin only)
-router.delete('/users/:id', async (req, res) => {
+router.delete('/users/:id', isAdmin, async (req, res) => {
   const { id } = req.params;
 
   if (!ObjectId.isValid(id)) {

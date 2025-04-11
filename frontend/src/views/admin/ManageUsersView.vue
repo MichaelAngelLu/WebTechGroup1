@@ -9,63 +9,118 @@ const users = ref([])
 const showAddForm = ref(false)
 const showEditForm = ref(false)
 const selectedUser = ref(null)
+const token = localStorage.getItem('token');
 
-// Fetch Users
+const authHeader = token ? { Authorization: `Bearer ${token}` } : {}
+
 const fetchUsers = async () => {
-  const res = await fetch('http://localhost:3000/api/users/users')
-  users.value = await res.json()
+  try {
+    const res = await fetch('http://localhost:3000/api/users/', {
+      headers: {
+        'Content-Type': 'application/json',
+        ...authHeader, // Include token in the request headers
+      }
+    })
+    
+    if (res.ok) {
+      users.value = await res.json()
+      console.log('Fetched users:', users.value)
+    } else {
+      const error = await res.json()
+      alert(error.message || 'Error fetching users')
+    }
+  } catch (err) {
+    console.error('Error fetching users:', err)
+    alert('Error fetching users')
+  }
 }
+
+onMounted(() => {
+  fetchUsers() // Fetch users when the component is mounted
+})
 
 // Add User Handler
 const handleUserSubmit = async (formData) => {
-  const res = await fetch('http://localhost:3000/api/users/users', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(formData)
-  })
-  if (res.ok) {
-    await fetchUsers()
-    showAddForm.value = false
-    alert('✅ User added!')
-  } else {
-    const error = await res.json()
-    alert(error.message || 'Error adding user')
+  try {
+    const res = await fetch('http://localhost:3000/api/users/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...authHeader // Include token in the request headers
+      },
+      body: JSON.stringify(formData)
+    })
+    
+    if (res.ok) {
+      await fetchUsers()
+      showAddForm.value = false
+      alert('✅ User added!')
+    } else {
+      const error = await res.json()
+      alert(error.message || 'Error adding user')
+    }
+  } catch (err) {
+    console.error('Error adding user:', err)
+    alert('Error adding user')
   }
 }
 
 // Edit User Handler
 const handleEditSubmit = async (formData) => {
-  const res = await fetch(`http://localhost:3000/api/users/users/${formData._id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(formData)
-  })
-  if (res.ok) {
-    await fetchUsers()
-    alert('✅ User updated!')
-    // Close modal and reset
-    showEditForm.value = false
-    selectedUser.value = null
-  } else {
-    const error = await res.json()
-    alert(error.message || 'Error updating user')
+  try {
+    const res = await fetch(`http://localhost:3000/api/users/${formData._id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        ...authHeader // Include token in the request headers
+      },
+      body: JSON.stringify(formData)
+    })
+
+    if (res.ok) {
+      await fetchUsers()
+      alert('✅ User updated!')
+      // Close modal and reset
+      showEditForm.value = false
+      selectedUser.value = null
+    } else {
+      const error = await res.json()
+      alert(error.message || 'Error updating user')
+    }
+  } catch (err) {
+    console.error('Error updating user:', err)
+    alert('Error updating user')
   }
 }
+
+const deleteUser = async (userId) => {
+  const authHeader = {
+    Authorization: `Bearer ${localStorage.getItem('token')}`
+  };
+
+  const res = await fetch(`http://localhost:3000/api/users/${userId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      ...authHeader // Include token in the request headers
+    }
+  });
+
+  if (res.ok) {
+    await fetchUsers()
+    alert('✅ User deleted!')
+  } else {
+    const error = await res.json()
+    alert(error.message || 'Error deleting user')
+  }
+}
+
 
 // Populate edit form
 const editUser = (user) => {
   selectedUser.value = user
   showEditForm.value = true
 }
-
-// Delete User
-const deleteUser = async (id) => {
-  if (!confirm('Are you sure you want to delete this user?')) return
-  await fetch(`http://localhost:3000/api/users/users/${id}`, { method: 'DELETE' })
-  await fetchUsers()
-}
-
-onMounted(() => fetchUsers())
 </script>
 
 <template>
@@ -78,23 +133,38 @@ onMounted(() => fetchUsers())
       <BaseButton label="Add User" variant="primary" @click="showAddForm = true" />
     </div>
 
-      <BaseTable :headers="['Name', 'Email', 'Role', 'Actions']">
-      <template #default>
-        <tr v-for="user in users" :key="user._id">
-          <td>{{ user.firstName }} {{ user.lastName }}</td>
-          <td>{{ user.email }}</td>
-          <td>
-            <span :class="['role-badge', user.role.toLowerCase()]">{{ user.role }}</span>
-          </td>
-          <td>
-            <div class="action-buttons">
-              <BaseButton label="Edit" size="sm" variant="primary" @click="editUser(user)" />
-              <BaseButton label="Delete" size="sm" variant="danger" @click="deleteUser(user._id)" />
-            </div>
-          </td>
-        </tr>
-      </template>
-    </BaseTable>
+    <BaseTable :headers="['Name', 'Email', 'Role', 'Actions']">
+  <template #default>
+    <tr v-for="user in users" :key="user._id">
+      <td>{{ user.firstName }} {{ user.lastName }}</td>
+      <td>{{ user.email }}</td>
+      <td>
+        <span
+          :class="['role-badge', (user.role || '').toLowerCase()]"
+        >
+          {{ user.role || 'N/A' }}
+        </span>
+      </td>
+      <td>
+        <div class="action-buttons">
+          <BaseButton
+            label="Edit"
+            size="sm"
+            variant="primary"
+            @click="editUser(user)"
+          />
+          <BaseButton
+            label="Delete"
+            size="sm"
+            variant="danger"
+            @click="deleteUser(user._id)"
+          />
+        </div>
+      </td>
+    </tr>
+  </template>
+</BaseTable>
+
 
 
     <!-- Add User Modal -->

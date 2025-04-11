@@ -9,7 +9,6 @@
   <div class="login-card">
     <BaseForm v-model="form" @submit="handleSubmit">
       <template #default="{ formData }">
-
         <BaseInput 
           v-model="formData.email" 
           label="Email" 
@@ -36,14 +35,13 @@
           <img src="@/assets/google-icon.svg" alt="Google" />
           Sign in with Google
         </a>
-
       </template>
     </BaseForm>
 
     <!-- Create Account -->
     <div class="create-account">
       <span>Don't have an account?</span>
-      <router-link to="/register">Create one</router-link> <!-- integrated route -->
+      <router-link to="/register">Create one</router-link>
     </div>
   </div>
 </template>
@@ -74,8 +72,11 @@ async function handleSubmit(data) {
     const result = await res.json();
 
     if (res.ok) {
-      // Store the token in localStorage for future requests
+      // Store the token and role in localStorage for future requests
       localStorage.setItem('token', result.token);  // Assuming token is in result.token
+      localStorage.setItem('role', result.user.role); // Store the role
+
+      console.log('Logged in role:', localStorage.getItem('role'));
 
       // Check if user object exists in the response and has the role
       if (result.user && result.user.role) {
@@ -83,12 +84,12 @@ async function handleSubmit(data) {
         
         // Route based on the user's role
         setTimeout(() => {
-          if (result.user.role === 'admin') {
-            router.push('/admin');
-          } else {
-            router.push('/applicant');
-          }
-        }, 1500);
+      if (result.user.role === 'admin' || result.user.role === 'staff') {
+        router.push('/admin');  // Both admin and staff users route to the admin page
+      } else {
+        router.push('/applicant');  // Default route for other roles (e.g., applicant)
+      }
+    }, 1500);
       } else {
         alert('❌ Role not found or user data is incomplete.');
       }
@@ -100,6 +101,7 @@ async function handleSubmit(data) {
     alert('❌ Login failed due to a network error.');
   }
 }
+
 </script>
 
 <style scoped>

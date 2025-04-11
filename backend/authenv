@@ -1,4 +1,12 @@
+MONGO_URI=mongodb+srv://lrjecerio:GrayLucas03172018%40@juanjobs-cluster.bozs5.mongodb.net/testDB?retryWrites=true&w=majority&appName=juanjobs-cluster
+JWT_SECRET=your_jwt_secret_key
 GOOGLE_CLIENT_ID=802082278231-1tlr4ajputag3asvtl2ihfhfnbl4t6m4.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=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
 GOOGLE_CALLBACK_URL=http://localhost:3000/auth/google/callback
 SESSION_SECRET=your_secret_key
+node
+
+AWS_ACCESS_KEY_ID=AKIAZQ3DPDXLSUPQSJP2
+AWS_SECRET_ACCESS_KEY=OtvA++UzOXg4ifdMVDCakJeT0mcg3FriUsbmVwn6
+AWS_REGION=ap-southeast-2
+AWS_BUCKET_NAME=juanjobsph-storage-bucket

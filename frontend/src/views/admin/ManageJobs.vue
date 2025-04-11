@@ -49,22 +49,33 @@ import BaseButton from '@/components/BaseButton.vue'
 import AddJobForm from './AddJobForm.vue'
 import EditJobForm from './EditJobForm.vue'
 
-const jobListings = ref([])
-const showAddForm = ref(false)
-const showEditForm = ref(false)
+const jobListings = ref([]) 
+const showAddForm = ref(false) 
+const showEditForm = ref(false) 
 const selectedJob = ref(null)
+const token = localStorage.getItem('token');
 
-// Fetch all jobs
+const authHeader = token ? { Authorization: `Bearer ${token}` } : {}
+
+// Fetch all jobs with token included in the headers
 const fetchJobs = async () => {
-  const res = await fetch('http://localhost:3000/api/jobs/jobs')
+  const res = await fetch('http://localhost:3000/api/jobs/', {
+    headers: {
+        'Content-Type': 'application/json',
+        ...authHeader, // Include token in the request headers
+    }
+  })
   jobListings.value = await res.json()
 }
 
 // Add job handler
 const handleJobSubmit = async (formData) => {
-  const res = await fetch('http://localhost:3000/api/jobs/jobs', {
+  const res = await fetch('http://localhost:3000/api/jobs/', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+        'Content-Type': 'application/json',
+        ...authHeader, // Include token in the request headers
+    },
     body: JSON.stringify(formData)
   })
   if (res.ok) {
@@ -79,9 +90,12 @@ const handleJobSubmit = async (formData) => {
 
 // Edit job handler
 const handleEditSubmit = async (formData) => {
-  const res = await fetch(`http://localhost:3000/api/jobs/jobs/${formData._id}`, {
+  const res = await fetch(`http://localhost:3000/api/jobs/${formData._id}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+        'Content-Type': 'application/json',
+        ...authHeader, // Include token in the request headers
+    },
     body: JSON.stringify(formData)
   })
   if (res.ok) {
@@ -106,11 +120,23 @@ const closeEditForm = () => {
   selectedJob.value = null
 }
 
-// Delete job
+// Delete job handler with token in headers
 const deleteJob = async (id) => {
   if (!confirm('Are you sure you want to delete this job?')) return
-  await fetch(`http://localhost:3000/api/jobs/jobs/${id}`, { method: 'DELETE' })
-  await fetchJobs()
+  const res = await fetch(`http://localhost:3000/api/jobs/${id}`, {
+    method: 'DELETE',
+    headers: {
+        'Content-Type': 'application/json',
+        ...authHeader, // Include token in the request headers
+    }
+  })
+  if (res.ok) {
+    await fetchJobs()
+    alert('✅ Job deleted successfully!')
+  } else {
+    const error = await res.json()
+    alert(error.message || 'Error deleting job')
+  }
 }
 
 onMounted(() => fetchJobs())

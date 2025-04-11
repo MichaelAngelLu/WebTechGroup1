@@ -38,10 +38,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/jobs', jobRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/files', (req, res, next) => {
+app.use('/api/auth/', authRoutes);
+app.use('/api', jobRoutes);
+app.use('/api', userRoutes);
+app.use('/api', (req, res, next) => {
   console.log(`Request received at: ${req.url}`);
   next();
 }, fileRoutes);

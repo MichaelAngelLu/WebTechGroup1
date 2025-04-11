@@ -3,7 +3,7 @@ const { ObjectId } = require('mongodb');  // Import ObjectId to handle MongoDB d
 const router = express.Router();
 const connectDB = require('../db/mongoClient');  // Assuming you've already set up the connection with MongoClient
 const validateToken = require('../middlewares/validateToken');  // Assuming you have a token validation middleware
-const isAdmin = require('../middlewares/isAdmin');  // Admin authorization middleware
+const { isStaffOrAdmin, isAdmin } = require('../middlewares/authMiddleware');
 
 // Post a job (admin only)
 router.post('/jobs', validateToken, isAdmin, async (req, res) => {
@@ -47,7 +47,7 @@ router.post('/jobs', validateToken, isAdmin, async (req, res) => {
   });
   
 // Get all job postings
-router.get('/jobs', async (req, res) => {
+router.get('/jobs', isStaffOrAdmin, async (req, res) => {
   try {
     const db = await connectDB();
     const jobCollection = db.collection('jobs');
@@ -58,38 +58,50 @@ router.get('/jobs', async (req, res) => {
   }
 });
 
-// Update a job posting (Admin)
+
+// ✅ UPDATE JOB POSTING (Admin only)
 router.put('/jobs/:id', validateToken, async (req, res) => {
   const { id } = req.params;
-  const { title, description, location, company } = req.body;
-  
+  const { title, description, location, company, status: jobStatus } = req.body;
+
+  // Validate job status
+  const validStatus = jobStatus === 'closed' ? 'closed' : 'open';
+
+  // Check if the provided ID is valid
+  if (!ObjectId.isValid(id)) {
+    return res.status(400).json({ message: 'Invalid Job ID' });
+  }
+
   try {
     const db = await connectDB();
     const jobCollection = db.collection('jobs');
-    
-    const updatedJob = {
-      title,
-      description,
-      location,
-      company,
-      status: jobStatus || 'Open',
-      postedDate: new Date(),
-    };
 
+    // Perform the update with validated values
     const result = await jobCollection.updateOne(
-      { _id: new ObjectId(id) },  // Use ObjectId to find the document
-      { $set: updatedJob }
+      { _id: new ObjectId(id) },
+      {
+        $set: {
+          title,
+          description,
+          location,
+          company,
+          status: validStatus,  // Use validated status value
+          updatedAt: new Date(),
+        },
+      }
     );
-    
+
     if (result.matchedCount === 0) {
       return res.status(404).json({ message: 'Job not found' });
     }
 
-    res.status(200).json(updatedJob);
+    res.status(200).json({ message: 'Job updated successfully' });
   } catch (err) {
     res.status(500).json({ message: 'Error updating job posting', error: err });
   }
 });
+
+
 
 // Delete a job posting (Admin)
 router.delete('/jobs/:id', validateToken, async (req, res) => {
