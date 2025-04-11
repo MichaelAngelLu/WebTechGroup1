@@ -126,7 +126,7 @@ async function submitApplication() {
   if (form.value.otherDocs) formData.append('otherDocs', form.value.otherDocs)
 
   try {
-    const response = await fetch('http://localhost:3000/api/applications', {
+    const response = await fetch('https://juanjobsph.onrender.com/api/applications', {
       method: 'POST',
       body: formData
     })

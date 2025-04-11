@@ -10,7 +10,7 @@ export async function apiRequest(endpoint, method = 'GET', data = null) {
     }
   
     try {
-      const res = await fetch(`http://localhost:3000/api/${endpoint}`, options);
+      const res = await fetch(`https://juanjobsph.onrender.com/api/${endpoint}`, options);
       const result = await res.json();
       return { ok: res.ok, data: result };
     } catch (err) {
