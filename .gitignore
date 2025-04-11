@@ -1,1 +1,3 @@
 backend/config/serviceAccountKey.json
+frontend/.env
+.env
