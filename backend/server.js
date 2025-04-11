@@ -76,14 +76,14 @@ app.use((req, res, next) => {
   next();
 });
 
-// Catch-all for undefined routes
-app.use((req, res) => {
-  res.status(404).json({ error: 'Route not found!' });
-});
-
 // Catch-all: send index.html (for Vue routing)
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
+});
+
+// Catch-all for undefined routes
+app.use((req, res) => {
+  res.status(404).json({ error: 'Route not found!' });
 });
 
 // Start Server
