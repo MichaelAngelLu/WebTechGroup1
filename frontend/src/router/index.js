@@ -33,6 +33,7 @@ const routes = [
   { path: '/jobs', name: 'JobListings', component: JobListingsView },
   { path: '/login', name: 'Login', component: LoginView },
   { path: '/register', name: 'Register', component: RegisterView },
+  { path: '/google-success', component: () => import('@/views/GoogleRedirect.vue')},
   
 
   // Admin Layout + Routes

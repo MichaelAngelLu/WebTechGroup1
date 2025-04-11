@@ -35,7 +35,7 @@ const handleUserSubmit = async (formData) => {
 
 // Edit User Handler
 const handleEditSubmit = async (formData) => {
-  const res = await fetch(`http://localhost:3000/api/users/${formData._id}`, {
+  const res = await fetch(`http://localhost:3000/api/users/users/${formData._id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(formData)
@@ -61,7 +61,7 @@ const editUser = (user) => {
 // Delete User
 const deleteUser = async (id) => {
   if (!confirm('Are you sure you want to delete this user?')) return
-  await fetch(`http://localhost:3000/api/users/${id}`, { method: 'DELETE' })
+  await fetch(`http://localhost:3000/api/users/users/${id}`, { method: 'DELETE' })
   await fetchUsers()
 }
 

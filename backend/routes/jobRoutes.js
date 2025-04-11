@@ -1,12 +1,13 @@
 const express = require('express');
+const { ObjectId } = require('mongodb');  // Import ObjectId to handle MongoDB document IDs
 const router = express.Router();
 const connectDB = require('../db/mongoClient');  // Assuming you've already set up the connection with MongoClient
-const validateToken = require('../middlewares/validateToken');  // Assuming you have a token validation middlewareno
+const validateToken = require('../middlewares/validateToken');  // Assuming you have a token validation middleware
 const isAdmin = require('../middlewares/isAdmin');  // Admin authorization middleware
 
 // Post a job (admin only)
 router.post('/jobs', validateToken, isAdmin, async (req, res) => {
-    const { title, description, location, company } = req.body;
+    const { title, description, location, company, status: jobStatus } = req.body;
   
     try {
       // Check if required fields are provided
@@ -22,7 +23,7 @@ router.post('/jobs', validateToken, isAdmin, async (req, res) => {
       const jobsCollection = db.collection('jobs');
   
       // Create the new job document
-      const newJob = { title, description, location, company, postedDate: new Date() };
+      const newJob = { title, description, location, company, status: jobStatus || 'Open', postedDate: new Date() };
   
       // Insert the job into the collection
       const result = await jobsCollection.insertOne(newJob);
@@ -44,7 +45,6 @@ router.post('/jobs', validateToken, isAdmin, async (req, res) => {
       });
     }
   });
-  
   
 // Get all job postings
 router.get('/jobs', async (req, res) => {
@@ -72,6 +72,7 @@ router.put('/jobs/:id', validateToken, async (req, res) => {
       description,
       location,
       company,
+      status: jobStatus || 'Open',
       postedDate: new Date(),
     };
 
